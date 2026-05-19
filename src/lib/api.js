@@ -258,10 +258,11 @@ export async function getUserProgress(traumaType) {
 }
 
 // ========== سرویس گرفتن یادداشت‌های دفترچه ==========
-export async function getJournalEntries(userId, page = 1, limit = 10) {
+export async function getJournalEntries( page = 1, limit = 10) {
   try {
-    const response = await apiClient.get('/journal', {
-      params: { user_id: userId, page, limit },
+    const offset = (page - 1) * limit;
+    const response = await apiClient.get('/journal/user', {
+      params: { limit, offset },
     });
     return response.data;
   } catch (error) {
@@ -271,10 +272,10 @@ export async function getJournalEntries(userId, page = 1, limit = 10) {
 }
 
 // ========== سرویس ایجاد یادداشت جدید ==========
-export async function createJournalEntry(userId, content, mood) {
+export async function createJournalEntry( content, mood) {
+  console.log(content,"ccccc")
   try {
-    const response = await apiClient.post('/journal', {
-      user_id: userId,
+    const response = await apiClient.post('/journal/create', {
       content: content,
       mood: mood,
     });
@@ -302,10 +303,24 @@ export async function updateJournalEntry(entryId, content, mood) {
 // ========== سرویس حذف یادداشت ==========
 export async function deleteJournalEntry(entryId) {
   try {
-    const response = await apiClient.delete(`/journal/${entryId}`);
+    const response = await apiClient.delete(`/journal/delete/${entryId}`);
     return response.data;
   } catch (error) {
     const message = error.response?.data?.message || 'خطا در حذف یادداشت';
+    throw new Error(message);
+  }
+}
+
+
+// ========== گرفتن یک یادداشت با ID ==========
+export async function getJournalEntryById(id) {
+  try {
+    const response = await apiClient.get(`/journal/${id}`);
+
+    console.log(response.data,"responseDataaaaa")
+    return response.data;
+  } catch (error) {
+    const message = error.response?.data?.message || 'خطا در دریافت یادداشت';
     throw new Error(message);
   }
 }

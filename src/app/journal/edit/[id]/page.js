@@ -1,15 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { createJournalEntry } from '@/lib/api';
+import { getJournalEntryById, updateJournalEntry } from '@/lib/api';
 
-export default function NewJournalPage() {
+export default function EditJournalPage() {
   const router = useRouter();
+  const params = useParams();
+  const id = params.id;
+  
   const [content, setContent] = useState('');
   const [mood, setMood] = useState(3);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
   const moodOptions = [
@@ -20,6 +24,28 @@ export default function NewJournalPage() {
     { value: 5, emoji: '😄', label: 'عالی', color: 'bg-teal-100 hover:bg-teal-200' }
   ];
 
+  useEffect(() => {
+    if (id) {
+      fetchEntry();
+    }
+  }, [id]);
+
+  const fetchEntry = async () => {
+    try {
+      setLoading(true);
+      const data = await getJournalEntryById(id);
+
+      console.log(data,"dataaaaa")
+      setContent(data.content);
+      setMood(data.mood);
+    } catch (err) {
+      console.error('Error fetching entry:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -28,21 +54,44 @@ export default function NewJournalPage() {
       return;
     }
 
-    setLoading(true);
+    setSaving(true);
     setError('');
 
     try {
-     const data = await createJournalEntry(content, mood);
-     console.log(data,"CreateJour")
-
-    //   router.push('/journal');
+     const data = await updateJournalEntry(id, content, mood);
+     console.log(data)
+      router.push('/journal');
     } catch (err) {
-      console.error('Error creating entry:', err);
+      console.error('Error updating entry:', err);
       setError(err.message);
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-500">در حال بارگذاری یادداشت...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && !content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center max-w-md">
+          <p className="text-red-600 mb-4">{error}</p>
+          <Link href="/journal" className="bg-teal-500 text-white px-6 py-2 rounded-lg">
+            بازگشت به دفترچه
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-50 p-6">
@@ -53,8 +102,8 @@ export default function NewJournalPage() {
           <Link href="/journal" className="inline-flex items-center gap-1 text-teal-600 text-sm mb-4">
             ← بازگشت به دفترچه
           </Link>
-          <h1 className="text-2xl font-bold text-gray-800">نوشتن یادداشت جدید</h1>
-          <p className="text-gray-500 mt-1">چیزی که داری احساس می‌کنی را بنویس</p>
+          <h1 className="text-2xl font-bold text-gray-800">ویرایش یادداشت</h1>
+          <p className="text-gray-500 mt-1">احساساتت را ویرایش کن</p>
         </div>
 
         {/* فرم */}
@@ -92,7 +141,7 @@ export default function NewJournalPage() {
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="امروز چه اتفاقی افتاد؟ چه احساسی داشتی؟ چه چیزی ذهنت رو درگیر کرده؟"
+              placeholder="امروز چه اتفاقی افتاد؟ چه احساسی داشتی؟"
               className="w-full h-64 p-4 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 resize-none"
             />
             <p className="text-xs text-gray-400 mt-2 text-left">
@@ -107,7 +156,7 @@ export default function NewJournalPage() {
             </div>
           )}
 
-          {/* دکمه ذخیره */}
+          {/* دکمه‌ها */}
           <div className="flex gap-3">
             <Link
               href="/journal"
@@ -117,18 +166,18 @@ export default function NewJournalPage() {
             </Link>
             <button
               type="submit"
-              disabled={loading}
+              disabled={saving}
               className="flex-1 bg-gradient-to-r from-teal-500 to-cyan-500 text-white py-3 rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50"
             >
-              {loading ? 'در حال ذخیره...' : '💾 ذخیره یادداشت'}
+              {saving ? 'در حال ذخیره...' : '💾 ذخیره تغییرات'}
             </button>
           </div>
         </form>
 
-        {/* نکته انگیزشی */}
+        {/* نکته */}
         <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 text-center">
           <p className="text-teal-700 text-sm">
-            ✨ نوشتن احساسات به تو کمک می‌کند تا بهتر آنها را بفهمی و رهایشان کنی.
+            ✨ هر بار که احساساتت را می‌نویسی، قدمی به سمت آرامش برمی‌داری.
           </p>
         </div>
       </div>
