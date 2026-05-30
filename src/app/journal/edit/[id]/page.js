@@ -35,7 +35,6 @@ export default function EditJournalPage() {
       setLoading(true);
       const data = await getJournalEntryById(id);
 
-      console.log(data,"dataaaaa")
       setContent(data.content);
       setMood(data.mood);
     } catch (err) {
