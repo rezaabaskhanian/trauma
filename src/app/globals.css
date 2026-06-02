@@ -1,6 +1,6 @@
-@import "tailwindcss";
+ @import "tailwindcss"; 
 
-:root {
+/*:root {
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -29,4 +29,5 @@ body {
 
 html {
   font-family: var(--font-vazir), sans-serif;
-}
+} 
+*/
