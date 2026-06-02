@@ -144,8 +144,8 @@ export default function DashboardPage() {
   return (
 <>
 
-<div style={{ background: "red", color: "white", fontSize: "50px" }}>
-      TEST VERSION 999
+<div className="bg-red-500 text-white text-5xl p-10">
+      TAILWIND TEST
     </div>
 
     <div className="min-h-screen bg-[#F8FAFC] text-slate-800 pb-12 selection:bg-blue-100" dir="rtl">
