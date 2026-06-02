@@ -142,8 +142,16 @@ export default function DashboardPage() {
   };
 
   return (
+<>
+
+<div style={{ background: "red", color: "white", fontSize: "50px" }}>
+      TEST VERSION 999
+    </div>
+
     <div className="min-h-screen bg-[#F8FAFC] text-slate-800 pb-12 selection:bg-blue-100" dir="rtl">
       <DecorativeBlobs />
+
+    
 
       {/* Header with improved depth */}
       <motion.header
@@ -396,5 +404,8 @@ export default function DashboardPage() {
         </div>
       </footer>
     </div>
+</>
+    
+  
   );
 }
