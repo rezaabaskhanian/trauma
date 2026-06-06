@@ -157,7 +157,7 @@ export default function AdminExercisesPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white/70 backdrop-blur-xl border border-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 overflow-hidden"
+        className="bg-white/60 backdrop-blur-xl border border-white/80 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 overflow-hidden"
       >
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
@@ -275,7 +275,7 @@ export default function AdminExercisesPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white rounded-[3rem] shadow-2xl z-[70] flex flex-col overflow-hidden max-h-[90vh]"
+              className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white/80 backdrop-blur-2xl border border-white/50 rounded-[3rem] shadow-2xl z-[70] flex flex-col overflow-hidden max-h-[90vh]"
             >
               {/* Header */}
               <div className="p-8 border-b border-slate-50 flex items-center justify-between">

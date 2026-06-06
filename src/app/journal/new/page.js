@@ -3,7 +3,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { motion } from 'motion/react';
+import { ArrowRight, BookOpen, Heart, Sparkles, Check, Save, X } from 'lucide-react';
 import { createJournalEntry } from '@/lib/api';
+import DecorativeBlobs from '@/components/layout/DecorativeBlobs';
 
 export default function NewJournalPage() {
   const router = useRouter();
@@ -13,29 +16,24 @@ export default function NewJournalPage() {
   const [error, setError] = useState('');
 
   const moodOptions = [
-    { value: 1, emoji: '😞', label: 'خیلی بد', color: 'bg-red-100 hover:bg-red-200' },
-    { value: 2, emoji: '😕', label: 'بد', color: 'bg-orange-100 hover:bg-orange-200' },
-    { value: 3, emoji: '😐', label: 'معمولی', color: 'bg-yellow-100 hover:bg-yellow-200' },
-    { value: 4, emoji: '🙂', label: 'خوب', color: 'bg-green-100 hover:bg-green-200' },
-    { value: 5, emoji: '😄', label: 'عالی', color: 'bg-teal-100 hover:bg-teal-200' }
+    { value: 1, icon: <Heart className="w-8 h-8" />, label: 'خیلی بد', color: 'text-red-500', bg: 'bg-red-50', ring: 'ring-red-200' },
+    { value: 2, icon: <Heart className="w-8 h-8" />, label: 'بد', color: 'text-orange-500', bg: 'bg-orange-50', ring: 'ring-orange-200' },
+    { value: 3, icon: <Heart className="w-8 h-8" />, label: 'معمولی', color: 'text-yellow-500', bg: 'bg-yellow-50', ring: 'ring-yellow-200' },
+    { value: 4, icon: <Heart className="w-8 h-8" />, label: 'خوب', color: 'text-emerald-500', bg: 'bg-emerald-50', ring: 'ring-emerald-200' },
+    { value: 5, icon: <Heart className="w-8 h-8" />, label: 'عالی', color: 'text-teal-500', bg: 'bg-teal-50', ring: 'ring-teal-200' }
   ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!content.trim()) {
       setError('لطفاً متن یادداشت را وارد کن');
       return;
     }
-
     setLoading(true);
     setError('');
-
     try {
-     const data = await createJournalEntry(content, mood);
-     console.log(data,"CreateJour")
-
-    //   router.push('/journal');
+      await createJournalEntry(content, mood);
+      router.push('/journal');
     } catch (err) {
       console.error('Error creating entry:', err);
       setError(err.message);
@@ -45,92 +43,129 @@ export default function NewJournalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-50 p-6">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 py-12 px-4 selection:bg-teal-100" dir="rtl">
+      <DecorativeBlobs />
+      
+      <div className="max-w-3xl mx-auto relative z-10 space-y-8">
         
-        {/* هدر */}
-        <div className="text-center">
-          <Link href="/journal" className="inline-flex items-center gap-1 text-teal-600 text-sm mb-4">
-            ← بازگشت به دفترچه
-          </Link>
-          <h1 className="text-2xl font-bold text-gray-800">نوشتن یادداشت جدید</h1>
-          <p className="text-gray-500 mt-1">چیزی که داری احساس می‌کنی را بنویس</p>
-        </div>
-
-        {/* فرم */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-6 space-y-6">
-          
-          {/* انتخاب حس */}
+        {/* Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-between"
+        >
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              امروز چه حسی داری؟
+            <h1 className="text-3xl font-black text-slate-900 flex items-center gap-3">
+              <div className="bg-gradient-to-tr from-teal-500 to-emerald-500 p-2.5 rounded-2xl text-white shadow-lg shadow-teal-200">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              نوشتن یادداشت جدید
+            </h1>
+            <p className="text-slate-500 font-medium mt-2">چیزی که در دلت هست را رها کن</p>
+          </div>
+          <Link href="/journal">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 bg-white/60 backdrop-blur-md border border-slate-200 px-4 py-2.5 rounded-2xl text-slate-600 font-bold hover:bg-white hover:shadow-md transition-all"
+            >
+              بازگشت
+              <ArrowRight className="w-4 h-4" />
+            </motion.button>
+          </Link>
+        </motion.div>
+
+        {/* Form */}
+        <motion.form 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          onSubmit={handleSubmit} 
+          className="bg-white/60 backdrop-blur-xl border border-white/80 shadow-2xl shadow-slate-200 rounded-[2.5rem] p-8 space-y-8 relative overflow-hidden"
+        >
+          {/* Mood Selection */}
+          <div>
+            <label className="flex items-center gap-2 text-sm font-black text-slate-700 uppercase tracking-widest mb-4">
+              <Heart className="w-4 h-4 text-rose-500" />
+              حس الان تو چیه؟
             </label>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="flex justify-between gap-3">
               {moodOptions.map((option) => (
-                <button
+                <motion.button
                   key={option.value}
                   type="button"
+                  whileHover={{ y: -5 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={() => setMood(option.value)}
-                  className={`flex flex-col items-center p-3 rounded-xl transition-all ${
+                  className={`flex-1 flex flex-col items-center gap-3 py-4 rounded-3xl transition-all duration-300 ${
                     mood === option.value
-                      ? `${option.color} ring-2 ring-teal-500 scale-105`
-                      : 'bg-gray-50 hover:bg-gray-100'
+                      ? `${option.bg} ${option.color} ring-4 ring-offset-4 ring-white ${option.ring} shadow-xl shadow-slate-200`
+                      : 'bg-slate-50/50 text-slate-400 hover:bg-white hover:text-slate-600 hover:shadow-lg'
                   }`}
                 >
-                  <span className="text-2xl">{option.emoji}</span>
-                  <span className="text-xs mt-1">{option.label}</span>
-                </button>
+                  <span className={`${mood === option.value ? 'scale-110 drop-shadow-sm' : ''} transition-transform`}>
+                    {option.icon}
+                  </span>
+                  <span className={`text-[10px] font-bold tracking-tight ${mood === option.value ? 'opacity-100' : 'opacity-60'}`}>
+                    {option.label}
+                  </span>
+                </motion.button>
               ))}
             </div>
           </div>
 
-          {/* متن یادداشت */}
+          {/* Textarea */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="flex items-center gap-2 text-sm font-black text-slate-700 uppercase tracking-widest mb-4">
+              <Sparkles className="w-4 h-4 text-teal-500" />
               یادداشت تو
             </label>
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="امروز چه اتفاقی افتاد؟ چه احساسی داشتی؟ چه چیزی ذهنت رو درگیر کرده؟"
-              className="w-full h-64 p-4 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 resize-none"
-            />
-            <p className="text-xs text-gray-400 mt-2 text-left">
+            <div className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-3xl blur opacity-10 group-focus-within:opacity-30 transition duration-500"></div>
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="امروز چه اتفاقی افتاد؟ چه احساسی داشتی؟ چه چیزی ذهنت رو درگیر کرده؟"
+                className="relative w-full h-72 p-6 bg-white border border-slate-100 rounded-3xl outline-none focus:ring-0 text-slate-700 leading-relaxed resize-none shadow-inner"
+              />
+            </div>
+            <p className="text-[11px] font-bold text-slate-400 mt-3 text-left">
               {content.length} کاراکتر
             </p>
           </div>
 
-          {/* خطا */}
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-center">
-              <p className="text-red-600 text-sm">{error}</p>
-            </div>
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="bg-red-50 border-2 border-red-100 text-red-600 px-6 py-4 rounded-2xl text-sm font-bold flex items-center gap-3">
+              <X className="w-5 h-5" />
+              {error}
+            </motion.div>
           )}
 
-          {/* دکمه ذخیره */}
-          <div className="flex gap-3">
-            <Link
-              href="/journal"
-              className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium text-center hover:bg-gray-200 transition"
-            >
-              انصراف
+          {/* Actions */}
+          <div className="flex gap-4 pt-4 border-t border-slate-100/50">
+            <Link href="/journal" className="flex-1">
+              <motion.button type="button" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full bg-slate-100 text-slate-600 py-4 rounded-2xl font-black shadow-sm hover:bg-slate-200 transition-colors">
+                انصراف
+              </motion.button>
             </Link>
-            <button
-              type="submit"
+            <motion.button 
+              type="submit" 
               disabled={loading}
-              className="flex-1 bg-gradient-to-r from-teal-500 to-cyan-500 text-white py-3 rounded-xl font-medium hover:shadow-lg transition disabled:opacity-50"
+              whileHover={{ scale: 1.02, shadow: "0 20px 25px -5px rgba(20, 184, 166, 0.4)" }} 
+              whileTap={{ scale: 0.98 }} 
+              className="flex-[2] bg-gradient-to-r from-teal-500 to-emerald-500 text-white py-4 rounded-2xl font-black shadow-xl shadow-teal-200 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
             >
-              {loading ? 'در حال ذخیره...' : '💾 ذخیره یادداشت'}
-            </button>
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <>
+                  <Save className="w-5 h-5" />
+                  ذخیره یادداشت
+                </>
+              )}
+            </motion.button>
           </div>
-        </form>
-
-        {/* نکته انگیزشی */}
-        <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 text-center">
-          <p className="text-teal-700 text-sm">
-            ✨ نوشتن احساسات به تو کمک می‌کند تا بهتر آنها را بفهمی و رهایشان کنی.
-          </p>
-        </div>
+        </motion.form>
       </div>
     </div>
   );

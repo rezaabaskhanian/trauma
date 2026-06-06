@@ -10,6 +10,7 @@ import {
   TrendingUp, Award, Flame, Dumbbell, Music, Volume2,
   Moon, Sun, Coffee, Smile, Activity
 } from 'lucide-react';
+import DecorativeBlobs from '@/components/layout/DecorativeBlobs';
 
 // نمونه داده‌های تمرین‌ها (بعداً از API میاد)
 const mockExercises = [
@@ -121,13 +122,17 @@ export default function ExercisesPage() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="space-y-8 pb-20"
-    >
-      {/* هدر بخش */}
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 pb-20 selection:bg-blue-100" dir="rtl">
+      <DecorativeBlobs />
+      
+      <div className="max-w-6xl mx-auto px-4 pt-12 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-8 pb-20"
+        >
+          {/* هدر بخش */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
@@ -181,7 +186,7 @@ export default function ExercisesPage() {
         {filteredExercises.map((ex) => (
           <div
             key={ex.id}
-            className="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300"
+            className="group bg-white/60 backdrop-blur-xl rounded-[2.5rem] overflow-hidden border border-white shadow-xl shadow-slate-200/50 hover:shadow-2xl transition-all duration-300"
           >
             <div className="relative h-48 overflow-hidden">
               <img src={ex.image} alt={ex.title} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
@@ -230,10 +235,12 @@ export default function ExercisesPage() {
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
-            className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl"
+            className="bg-white/80 backdrop-blur-2xl rounded-[3rem] border border-white/50 max-w-md w-full p-8 shadow-2xl shadow-blue-900/10"
           >
-            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-primary" />
+            <h2 className="text-xl font-black text-slate-800 mb-6 flex items-center gap-3">
+              <div className="bg-blue-100 p-2 rounded-2xl">
+                <Sparkles className="w-6 h-6 text-blue-600" />
+              </div>
               طراحی تمرین اختصاصی
             </h2>
             <form onSubmit={handleAddExercise} className="space-y-4">
@@ -279,14 +286,16 @@ export default function ExercisesPage() {
                 onChange={(e) => setNewExercise({ ...newExercise, duration: parseInt(e.target.value) })}
                 className="w-full px-4 py-3 border border-slate-200 rounded-xl"
               />
-              <div className="flex gap-3 pt-4">
-                <button type="submit" className="flex-1 bg-primary text-white py-3 rounded-xl font-bold">ذخیره تمرین</button>
-                <button type="button" onClick={() => setShowBuilder(false)} className="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold">انصراف</button>
+              <div className="flex gap-4 pt-6">
+                <button type="submit" className="flex-[2] bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg shadow-blue-200 text-white py-4 rounded-2xl font-black transition-all hover:scale-[1.02] active:scale-95">ذخیره تمرین</button>
+                <button type="button" onClick={() => setShowBuilder(false)} className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 py-4 rounded-2xl font-black transition-colors">انصراف</button>
               </div>
             </form>
           </motion.div>
         </div>
       )}
-    </motion.div>
+        </motion.div>
+      </div>
+    </div>
   );
 }

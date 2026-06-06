@@ -167,15 +167,14 @@ export async function getAssessmentQuestions() {
 // ========== سرویس ارسال پاسخ‌های تست ==========
 export async function submitAssessment(assessmentId, answers) {
 
-
+  console.log(assessmentId, answers,"assessmentID and Answers")
   try {
-
-
     const response = await apiClient.post('/assessment/submit', {
 
       assessment_id: assessmentId,
       answers: answers,
     });
+
     return response.data;
   } catch (error) {
     const message = error.response?.data?.message || 'ی موحودخطا در ثبت پاسخ‌ها';
@@ -332,8 +331,14 @@ export default apiClient;
 
 // ========== آمار داشبورد ==========
 export async function getDashboardStats(traumaType) {
+
+
   try {
     const response = await apiClient.get(`/dashboard/stats/${traumaType}`);
+
+
+
+  
     return response.data;
   } catch (error) {
     console.error('Error fetching dashboard stats:', error);
@@ -365,6 +370,7 @@ export async function getLatestAssessment() {
 export async function getTodayMood() {
   try {
     const response = await apiClient.get('/journal/today-mood');
+   
     return response.data;
   } catch (error) {
     console.error('Error fetching today mood:', error);
@@ -387,7 +393,7 @@ export async function saveTodayMood(mood) {
 export async function getSuggestedExercises(limit = 2) {
   try {
     const traumaType = localStorage.getItem('traumaType') || 'mild';
-    console.log(traumaType, "traumaType")
+ 
 
     const response = await getExercisesByTraumaType(traumaType);
     // فقط ۲ تا اول را برمی‌گرداند

@@ -54,9 +54,13 @@ export default function AssessmentPage() {
     setSubmitting(true);
     setError('');
     try {
+      
       const response = await submitAssessment(assessmentId, Answers);
+
+      console.log(response,"response.trauma_type")
+
       localStorage.setItem('lastAssessmentResult', JSON.stringify(response));
-      localStorage.setItem('traumaType', JSON.stringify(response.trauma_type));
+      localStorage.setItem('traumaType', response.trauma_type);
       router.push(`/assessment/result/${response.assessment_id}`);
     } catch (err) {
       setError('خطا در ثبت پاسخ‌ها. لطفاً دوباره تلاش کنید.');
@@ -148,7 +152,7 @@ export default function AssessmentPage() {
                   <Heart className="w-6 h-6 fill-current" />
                 </div>
                 <h2 className="text-2xl font-black text-slate-900 leading-tight">
-                  {currentQuestion.text}
+                  {currentQuestion?.text}
                 </h2>
               </div>
 

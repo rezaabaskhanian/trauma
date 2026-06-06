@@ -103,7 +103,7 @@ export default function AdminDashboard() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
               whileHover={{ y: -8 }}
-              className="relative overflow-hidden bg-white p-8 rounded-[2.5rem] border border-slate-50 shadow-xl shadow-slate-100/50 transition-all"
+              className="relative overflow-hidden bg-white/60 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white/80 shadow-2xl shadow-slate-200/50 transition-all"
             >
               <div className="flex items-center justify-between relative z-10">
                 <div>
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
       {/* Quick Actions & Recent Activity Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         {/* Quick Actions */}
-        <section className="bg-white/60 backdrop-blur-md p-8 rounded-[2.5rem] border border-white shadow-xl shadow-slate-100">
+        <section className="bg-white/60 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white/80 shadow-2xl shadow-slate-200/50">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-xl font-black text-slate-900 flex items-center gap-3">
               <span className="w-1.5 h-6 bg-indigo-500 rounded-full" />
@@ -141,7 +141,7 @@ export default function AdminDashboard() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link href="/admin/users" className="group">
-              <div className="p-5 bg-white border border-slate-100 rounded-[2rem] hover:border-indigo-200 hover:shadow-lg hover:shadow-indigo-500/5 transition-all">
+              <div className="p-5 bg-white/80 backdrop-blur-md border border-white/50 rounded-[2.5rem] hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-500/10 transition-all">
                 <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-4 group-hover:scale-110 transition-transform">
                   <UserPlus className="w-6 h-6" />
                 </div>
@@ -154,7 +154,7 @@ export default function AdminDashboard() {
             </Link>
 
             <Link href="/admin/exercises" className="group">
-              <div className="p-5 bg-white border border-slate-100 rounded-[2rem] hover:border-emerald-200 hover:shadow-lg hover:shadow-emerald-500/5 transition-all">
+              <div className="p-5 bg-white/80 backdrop-blur-md border border-white/50 rounded-[2.5rem] hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-500/10 transition-all">
                 <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-4 group-hover:scale-110 transition-transform">
                   <Dumbbell className="w-6 h-6" />
                 </div>
@@ -169,7 +169,7 @@ export default function AdminDashboard() {
         </section>
 
         {/* Recent Activity Placeholder */}
-        <section className="bg-white/60 backdrop-blur-md p-8 rounded-[2.5rem] border border-white shadow-xl shadow-slate-100">
+        <section className="bg-white/60 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white/80 shadow-2xl shadow-slate-200/50">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-xl font-black text-slate-900 flex items-center gap-3">
               <span className="w-1.5 h-6 bg-pink-500 rounded-full" />
